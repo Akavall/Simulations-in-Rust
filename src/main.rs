@@ -14,6 +14,13 @@ fn main() {
     let prob_down = 0.5;
 
     println!("prob to conv at {} is {}", a, calc_conv_prob(a, prob_down));
+
+    let temp = calc_conv_prob_combinations(3, 0.8);
+    println!("prob to conv at 3 is {}", temp);
+
+    let n_crosses = calc_expected_n_crosses_combinations(0.5, 3);
+    println!("expected number of crosses: {}", n_crosses);
+
     /*
     let mut cum_sum = 0.0;
     for i in (1..10) {
@@ -26,15 +33,16 @@ fn main() {
     println!("counter : {:?}", my_counter);
     */
 
+    /*
     let n_covs = simulation_part::gen_n_convs_one_run(0.5, 10);
     println!("n_covs : {}", n_covs);
 
     let expected_crosses = calc_expected_n_crosses(0.5, 10);
     println!("Expected crosses : {}", expected_crosses);
 
-    let sim_crosses = simulation_part::gen_expected_crosses(0.5, 10, 1000000);
+    let sim_crosses = simulation_part::gen_expected_crosses(0.5, 3, 1000000);
     println!("Expected crosses sim : {}", sim_crosses);
-
+    */
     // Something is way off, there is a big difference :( 
     
 }
@@ -52,6 +60,20 @@ fn calc_expected_n_crosses(prob_down: f64, n_turns: i32) -> f64 {
     return expected_crosses;
 }
 
+fn calc_expected_n_crosses_combinations(prob_down: f64, n_turns: i32) -> f64 {
+    // This approach seems flawd
+    // it way underestimates paths that just drift off
+    let n_turns_float = n_turns as f64;
+    let mut expected_crosses = 0.0;
+    for i in (1..(n_turns + 1)) {
+        let conv_prob = calc_conv_prob_combinations(i, prob_down);
+        println!("{} : {}", i, conv_prob);
+        expected_crosses += conv_prob;
+    }
+    return expected_crosses;
+}
+
+
 fn calc_conv_prob(n: i32, prob_down: f64) -> f64 {
     let catalan = calc_catalan((n-1));
     let prob_up = 1.0 - prob_down;
@@ -59,10 +81,22 @@ fn calc_conv_prob(n: i32, prob_down: f64) -> f64 {
     return catalan * prob_of_one;
 }
 
+fn calc_conv_prob_combinations(n: i32, prob_down: f64) -> f64 {
+    let n_combinations = calc_combinations(n);
+    let prob_up = 1.0 - prob_down;
+    let prob_of_one = prob_up.powi(n) * prob_down.powi(n);
+    return n_combinations * prob_of_one;
+}
+
 
 fn calc_catalan(n: i32) -> f64 {
     let n_f64 = n as f64;
     return fact(n * 2) / (fact(n) * fact(n) * ((n_f64+1.0)));
+}
+
+fn calc_combinations(n: i32) -> f64 {
+    let n_f64 = n as f64;
+    return fact(n * 2) / (fact(n) * fact(n))
 }
 
 fn fact(n: i32) -> f64 {
