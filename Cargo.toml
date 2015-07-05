@@ -1,0 +1,9 @@
+[package]
+name = "simulation"
+version = "0.1.0"
+authors = ["Akavall <akavall@gmail.com>"]
+
+[dependencies]
+
+num = "0.1.0"
+rand = "0.3.0"

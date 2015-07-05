@@ -1,0 +1,35 @@
+extern crate rand;
+
+use rand::Rng;
+use std::collections::HashMap;
+
+pub fn gen_conv_dist(prob_down: f64, n_turns: i32, n_iterations: i32) -> HashMap<i32, i32> {
+    let mut counter: HashMap<i32, i32> = HashMap::new();
+    for _ in (0..n_iterations) {
+        let turns = gen_conv_one_run(prob_down, n_turns);
+        if counter.contains_key(&turns) {
+            *counter.get_mut(&turns).unwrap() += 1;
+        } else {
+            counter.insert(turns, 1);
+        }
+    }
+    return counter;
+}
+
+pub fn gen_conv_one_run(prob_down: f64, n_turns: i32) -> i32 {
+    let mut up_down_balance = 1;
+    for i in (2..(n_turns * 2)) {
+        let roll = rand::thread_rng().gen_range(0.0, 1.0);
+        if roll < prob_down {
+            up_down_balance -= 1;
+        } else {
+            up_down_balance += 1;
+        }
+        if up_down_balance == 0 {
+            return i / 2;
+        }
+    }
+    return -1; 
+    
+}
+
