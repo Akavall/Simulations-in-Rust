@@ -18,33 +18,14 @@ fn main() {
     let temp = calc_conv_prob_combinations(3, 0.8);
     println!("prob to conv at 3 is {}", temp);
 
-    let n_crosses = calc_expected_n_crosses_combinations(0.5, 3);
+    // Looks right, but I need validate it
+    let n_crosses = calc_expected_n_crosses_combinations(0.5, 10);
     println!("expected number of crosses: {}", n_crosses);
 
-    /*
-    let mut cum_sum = 0.0;
-    for i in (1..10) {
-        let prob = calc_conv_prob(i, prob_up, prob_down);
-        cum_sum += prob;
-        println!("turn : {}, prob : {}, cum_sum : {}", i, prob, cum_sum);
-    }
+    let loss = calc_loss_combinations(10, 0.5);
+    println!("total loss: {}", loss);
 
-    let my_counter = simulation_part::gen_conv_dist(0.5, 10, 1000000);
-    println!("counter : {:?}", my_counter);
-    */
-
-    /*
-    let n_covs = simulation_part::gen_n_convs_one_run(0.5, 10);
-    println!("n_covs : {}", n_covs);
-
-    let expected_crosses = calc_expected_n_crosses(0.5, 10);
-    println!("Expected crosses : {}", expected_crosses);
-
-    let sim_crosses = simulation_part::gen_expected_crosses(0.5, 3, 1000000);
-    println!("Expected crosses sim : {}", sim_crosses);
-    */
-    // Something is way off, there is a big difference :( 
-    
+   
 }
 
 fn calc_expected_n_crosses(prob_down: f64, n_turns: i32) -> f64 {
@@ -97,6 +78,20 @@ fn calc_catalan(n: i32) -> f64 {
 fn calc_combinations(n: i32) -> f64 {
     let n_f64 = n as f64;
     return fact(n * 2) / (fact(n) * fact(n))
+}
+
+fn calc_loss_combinations(n: i32, prob_down: f64) -> f64 {
+    let mut total_loss = 0.0;
+    let prob_up = 1.0 - prob_down;
+    for i in 1..(n+1) {
+        let f = i as f64;
+        let combs = fact(n * 2) / (fact(n+i) * fact(n-i));
+        println!("combs: {}", combs);
+        let single_loss = f * (prob_up.powi(n+i) * prob_down.powi(n-i)) * combs;
+        println!("single_loss: {}", single_loss);
+        total_loss += single_loss;
+        }
+    return total_loss;
 }
 
 fn fact(n: i32) -> f64 {
