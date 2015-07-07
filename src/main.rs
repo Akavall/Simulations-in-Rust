@@ -19,10 +19,10 @@ fn main() {
     println!("prob to conv at 3 is {}", temp);
 
     // Looks right, but I need validate it
-    let n_crosses = calc_expected_n_crosses_combinations(0.5, 10);
+    let n_crosses = calc_expected_n_crosses_combinations(0.8, 10);
     println!("expected number of crosses: {}", n_crosses);
 
-    let loss = calc_loss_combinations(10, 0.5);
+    let loss = calc_loss_combinations(10, 0.8);
     println!("total loss: {}", loss);
 
    
@@ -80,15 +80,18 @@ fn calc_combinations(n: i32) -> f64 {
     return fact(n * 2) / (fact(n) * fact(n))
 }
 
+// This seems correct but needs more validation
+// since losses are greater than profits for prob_down = 0.5 
 fn calc_loss_combinations(n: i32, prob_down: f64) -> f64 {
     let mut total_loss = 0.0;
     let prob_up = 1.0 - prob_down;
-    for i in 1..(n+1) {
+    for i in 0..(n+1) {
         let f = i as f64;
         let combs = fact(n * 2) / (fact(n+i) * fact(n-i));
-        println!("combs: {}", combs);
-        let single_loss = f * (prob_up.powi(n+i) * prob_down.powi(n-i)) * combs;
-        println!("single_loss: {}", single_loss);
+        // We multiply f by 2 because at these points 
+        // losses about even numbers 
+        // and we multiyply combs by 2 because of symmetry 
+        let single_loss = (f * 2.0) * (prob_up.powi(n+i) * prob_down.powi(n-i)) * combs * 2.0;
         total_loss += single_loss;
         }
     return total_loss;
