@@ -4,6 +4,7 @@ extern crate rand;
 use num::traits::Float;
 
 mod simulation_part;
+mod simulation_combs;
 
 fn main() {
 
@@ -22,10 +23,12 @@ fn main() {
     let n_crosses = calc_expected_n_crosses_combinations(0.5, 10);
     println!("expected number of crosses: {}", n_crosses);
 
-    let loss = calc_loss_combinations(10, 0.5);
+    let loss = calc_loss_combinations(10, 0.8);
     println!("total loss: {}", loss);
 
-   
+    println!("Simulation Result");
+    let sim_loss = simulation_combs::many_simulations(10, 0.8, 1000000);
+    println!("total loss: {}", sim_loss);
 }
 
 fn calc_expected_n_crosses(prob_down: f64, n_turns: i32) -> f64 {
