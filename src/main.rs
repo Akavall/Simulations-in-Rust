@@ -3,6 +3,7 @@ extern crate rand;
 
 use num::traits::Float;
 
+mod math_tools;
 mod simulation_part;
 mod simulation_combs;
 mod analytics_combs;
@@ -25,7 +26,7 @@ fn main() {
     println!("total loss: {}", loss);
 
     println!("Simulation Result");
-    let sim_loss = simulation_combs::many_simulations(10, 0.8, 1000000);
+    let sim_loss = simulation_combs::many_simulations(10, 0.8, 10000000);
     println!("total loss: {}", sim_loss);
 }
 

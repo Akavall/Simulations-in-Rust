@@ -1,4 +1,4 @@
-// mod math_tools;
+use math_tools;
 
 pub fn calc_expected_n_crosses_combinations(prob_down: f64, n_turns: i32) -> f64 {
     let n_turns_float = n_turns as f64;
@@ -20,7 +20,7 @@ fn calc_conv_prob_combinations(n: i32, prob_down: f64) -> f64 {
 
 fn calc_combinations(n: i32) -> f64 {
     let n_f64 = n as f64;
-    return fact(n * 2) / (fact(n) * fact(n))
+    return math_tools::fact(n * 2) / (math_tools::fact(n) * math_tools::fact(n))
 }
 
 
@@ -29,7 +29,7 @@ pub fn calc_loss_combinations(n: i32, prob_down: f64) -> f64 {
     let prob_up = 1.0 - prob_down;
     for i in 0..(n+1) {
         let f = i as f64;
-        let combs = fact(n * 2) / (fact(n+i) * fact(n-i));
+        let combs = math_tools::fact(n * 2) / (math_tools::fact(n+i) * math_tools::fact(n-i));
         // We multiply f by 2 because at these points 
         // losses about even numbers 
         // and we multiyply combs by 2 because of symmetry 
@@ -45,16 +45,6 @@ pub fn calc_loss_combinations(n: i32, prob_down: f64) -> f64 {
     return total_loss;
 }
 
-fn fact(n: i32) -> f64 {
-    
-    let mut prod = 1.0;
-    for i in (1..(n+1)) {
-       let f = i as f64; 
-       prod = prod * f;
-    }
-        
-   return prod;
-}
 
 
 
