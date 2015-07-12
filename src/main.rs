@@ -25,8 +25,12 @@ fn main() {
     let sim_loss = simulation_combs::many_simulations(10, 0.5, 1000000);
     println!("total loss: {}", sim_loss);
 
-    let sim_loss_wb = simulation_combs_w_break::many_simulations(5, 5, 0.5, 0.5, 1000000);
+    let sim_loss_wb = simulation_combs_w_break::many_simulations_losses(5, 5, 0.5, 0.5, 1000000);
     println!("total loss w b: {}", sim_loss_wb);
+
+    let sim_cross_wb = simulation_combs_w_break::many_simulations_crosses(5, 5, 0.5, 0.5, 1000000);
+    println!("total cross w b: {}", sim_cross_wb);
+
 
 
 }
