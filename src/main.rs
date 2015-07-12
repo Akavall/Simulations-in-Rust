@@ -8,6 +8,7 @@ mod simulation_part;
 mod simulation_combs;
 mod analytics;
 mod analytics_combs;
+mod simulation_combs_w_break;
 
 fn main() {
 
@@ -23,6 +24,11 @@ fn main() {
     println!("Simulation Result");
     let sim_loss = simulation_combs::many_simulations(10, 0.5, 1000000);
     println!("total loss: {}", sim_loss);
+
+    let sim_loss_wb = simulation_combs_w_break::many_simulations(5, 5, 0.5, 0.5, 1000000);
+    println!("total loss w b: {}", sim_loss_wb);
+
+
 }
 
 
