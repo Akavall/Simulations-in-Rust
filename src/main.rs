@@ -31,6 +31,9 @@ fn main() {
     let sim_cross_wb = simulation_combs_w_break::many_simulations_crosses(5, 5, 0.5, 0.5, 1000000);
     println!("total cross w b: {}", sim_cross_wb);
 
+    println!("Testing HashMap");
+    let silly = analytics_combs::make_break_map(8, 0.5);
+    println!("{:?}", silly);
 
 
 }
