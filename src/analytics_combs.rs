@@ -1,4 +1,5 @@
 use math_tools;
+use std::collections::HashMap;
 
 pub fn calc_expected_n_crosses_combinations(prob_down: f64, n_turns: i32) -> f64 {
     let n_turns_float = n_turns as f64;
@@ -11,16 +12,38 @@ pub fn calc_expected_n_crosses_combinations(prob_down: f64, n_turns: i32) -> f64
     return expected_crosses;
 }
 
+fn make_break_map(n_before_break: i32, prob_down: f64) {
+    let mut my_map = HashMap::new();
+    for i in 0..n_before_break {
+        let p = calc_conv_prob_combinations_break(i, n_before_break, prob_down);
+        my_map.insert(i * 2, p)
+    }
+    my_map
+}
+
 fn calc_conv_prob_combinations(n: i32, prob_down: f64) -> f64 {
     let n_combinations = calc_combinations(n);
     let prob_up = 1.0 - prob_down;
     let prob_of_one = prob_up.powi(n) * prob_down.powi(n);
-    return n_combinations * prob_of_one;
+    return n_combinations * prob_of_one; 
+}
+
+fn calc_conv_prob_combinations_break(n: i32, prob_down: f64, from_cross: i32) -> f64 {
+    let n_combinations = calc_combinations_break(n, from_cross);
+    let prob_up = 1.0 - prob_down;
+    let prob_of_one = prob_up.powi(n) * prob_down.powi(n);
+    return n_combinations * prob_of_one; 
 }
 
 fn calc_combinations(n: i32) -> f64 {
     let n_f64 = n as f64;
     return math_tools::fact(n * 2) / (math_tools::fact(n) * math_tools::fact(n))
+}
+
+fn calc_combinations_break(n: i32, from_cross: i32) -> f64 {
+    let n_f64 = n as f64;
+    let a = from_cross / 2;
+    return math_tools::fact(n * 2) / (math_tools::fact(n + a) * math_tools::fact(n - a))
 }
 
 
