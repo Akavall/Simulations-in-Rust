@@ -55,6 +55,24 @@ fn calc_combinations_break(n: i32, from_cross: i32) -> f64 {
     return math_tools::fact(n * 2) / (math_tools::fact(n + a) * math_tools::fact(n - a))
 }
 
+pub fn calc_after_break_exp_crosses(from_cross: i32, prob_down: f64, i: i32) ->  f64 {
+    let n_combs = math_tools::fact(i * 2) / (math_tools::fact(from_cross + i) * math_tools::fact(i));
+
+    let prob_up = 1.0 - prob_down;
+    let prob_of_one = prob_down.powi(from_cross + i) * prob_up.powi(i);
+    println!("n_combs : {}, prob_of_one : {}", n_combs, prob_of_one);
+    n_combs as f64 * prob_of_one
+}
+
+pub fn calc_after_break_exp_crosses_one_point(from_cross: i32, prob_down: f64, n_full_turns_after_break: i32) -> f64 {
+    let mut n_expected_crosses = 0.0;
+    for i in 1..(n_full_turns_after_break - from_cross + 1) {
+        n_expected_crosses = n_expected_crosses + calc_after_break_exp_crosses(from_cross, prob_down, i);
+        println!("expected crosses : {}", n_expected_crosses);
+    }
+    n_expected_crosses
+}
+
 
 pub fn calc_loss_combinations(n: i32, prob_down: f64) -> f64 {
     let mut total_loss = 0.0;

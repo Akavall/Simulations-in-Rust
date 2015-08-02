@@ -38,6 +38,12 @@ fn main() {
     // let silly = analytics_combs::make_break_map(8, 0.5);
     // println!("{:?}", silly);
 
+    let temp = analytics_combs::calc_after_break_exp_crosses(1, 0.9, 6);
+    println!("temp : {}", temp);
+
+    let temp_2 = analytics_combs::calc_after_break_exp_crosses_one_point(0, 0.5, 10);
+    println!("temp_2 : {}", temp_2);
+
 }
 
 
