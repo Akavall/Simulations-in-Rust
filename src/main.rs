@@ -21,20 +21,22 @@ fn main() {
     let loss = analytics_combs::calc_loss_combinations(10, 0.5);
     println!("total loss: {}", loss);
 
-    println!("Simulation Result");
-    let sim_loss = simulation_combs::many_simulations(10, 0.5, 1000000);
-    println!("total loss: {}", sim_loss);
+    // println!("Simulation Result");
+    // let sim_loss = simulation_combs::many_simulations(10, 0.5, 1000000);
+    // println!("total loss: {}", sim_loss);
 
-    let sim_loss_wb = simulation_combs_w_break::many_simulations_losses(5, 5, 0.5, 0.5, 1000000);
-    println!("total loss w b: {}", sim_loss_wb);
+    // let sim_loss_wb = simulation_combs_w_break::many_simulations_losses(5, 5, 0.5, 0.5, 1000000);
+    // println!("total loss w b: {}", sim_loss_wb);
 
-    let sim_cross_wb = simulation_combs_w_break::many_simulations_crosses(5, 5, 0.5, 0.5, 1000000);
-    println!("total cross w b: {}", sim_cross_wb);
+    // let sim_cross_wb = simulation_combs_w_break::many_simulations_crosses(5, 5, 0.5, 0.5, 1000000);
+    // println!("total cross w b: {}", sim_cross_wb);
 
     println!("Testing HashMap");
-    let silly = analytics_combs::make_break_map(8, 0.5);
+    let silly = analytics_combs::make_break_map(8, 0.0);
     println!("{:?}", silly);
 
+    // let silly = analytics_combs::make_break_map(8, 0.5);
+    // println!("{:?}", silly);
 
 }
 
