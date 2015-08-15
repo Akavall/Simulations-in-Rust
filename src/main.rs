@@ -41,8 +41,14 @@ fn main() {
     let temp = analytics_combs::calc_after_break_exp_crosses(1, 0.9, 6);
     println!("temp : {}", temp);
 
-    let temp_2 = analytics_combs::calc_after_break_exp_crosses_one_point(0, 0.5, 10);
+    let temp_2 = analytics_combs::calc_after_break_exp_crosses_one_point(2, 0.5, 20);
     println!("temp_2 : {}", temp_2);
+
+    let temp3 = analytics_combs::calc_away_from_cross_to_prob(4, 0.5, 10);
+    println!("temp_3 : {:?}", temp3);
+
+    let temp4 = analytics_combs::calc_expected_crosses_after_break(8, 8, 0.6, 0.6);
+    println!("temp_4 : {:?}", temp4);
 
 }
 

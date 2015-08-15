@@ -14,14 +14,14 @@ pub fn calc_expected_n_crosses_combinations(prob_down: f64, n_turns: i32) -> f64
 
 pub fn make_break_map(n_before_break: i32, prob_down: f64) -> HashMap<i32, f64> {
     let mut my_map = HashMap::<i32, f64>::new();
-    let n_full_turns = n_before_break / 2; // n_before_break is measured in half_turns
-                                      
-    for i in 0..(n_full_turns + 1) {
-        let p = calc_conv_prob_combinations_break(n_full_turns, prob_down, i * 2);
+         
+    // should user (0..n).step_by(2) here eventually 
+    for i in 0..(n_before_break + 1) {
+        let p = calc_conv_prob_combinations_break(n_before_break, prob_down, i * 2);
         if i == 0 {
-            my_map.insert(i * 2, p); 
+            my_map.insert(i, p); 
             } else  {
-            my_map.insert(i * 2, p * 2.0); // Probability doubles due to symmetry
+            my_map.insert(i, p * 2.0); // Probability doubles due to symmetry
         }
     }
     my_map
@@ -53,6 +53,36 @@ fn calc_combinations_break(n: i32, from_cross: i32) -> f64 {
     let n_f64 = n as f64;
     let a = from_cross / 2;
     return math_tools::fact(n * 2) / (math_tools::fact(n + a) * math_tools::fact(n - a))
+}
+
+pub fn calc_expected_crosses_after_break(n_before_break: i32, n_after_break: i32, prob_down_before: f64, prob_down_after: f64) -> f64 {
+    let break_map = make_break_map(n_before_break, prob_down_before);
+    let away_from_cross_to_prob = calc_away_from_cross_to_prob(n_before_break, prob_down_after, n_after_break);
+ 
+    let mut expected_crosses = 0.0;
+
+    println!("break map : {:?}", break_map);
+    println!("cross_to_prob : {:?}", away_from_cross_to_prob);
+
+    for (k, v) in away_from_cross_to_prob.iter() {
+        expected_crosses = expected_crosses + break_map[k];
+        println!("expected_crosses : {}", expected_crosses)
+    }
+
+    expected_crosses
+}
+
+
+
+pub fn calc_away_from_cross_to_prob(n_to_break: i32, prob_down: f64, n_from_break_to_end: i32) -> HashMap<i32, f64> {
+    // n_from_break should be equal to n_from_cross 
+    let mut my_map = HashMap::<i32, f64>::new();
+
+    for i in 0..(n_to_break+1) {
+        my_map.insert(i, calc_after_break_exp_crosses_one_point(i, prob_down, n_from_break_to_end));
+    }
+
+    my_map
 }
 
 pub fn calc_after_break_exp_crosses(from_cross: i32, prob_down: f64, i: i32) ->  f64 {
