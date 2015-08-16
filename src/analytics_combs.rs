@@ -6,7 +6,6 @@ pub fn calc_expected_n_crosses_combinations(prob_down: f64, n_turns: i32) -> f64
     let mut expected_crosses = 0.0;
     for i in (1..(n_turns + 1)) {
         let conv_prob = calc_conv_prob_combinations(i, prob_down);
-        println!("{} : {}", i, conv_prob);
         expected_crosses += conv_prob;
     }
     return expected_crosses;
@@ -15,12 +14,11 @@ pub fn calc_expected_n_crosses_combinations(prob_down: f64, n_turns: i32) -> f64
 pub fn make_break_map(n_before_break: i32, prob_down: f64) -> HashMap<i32, f64> {
     let mut my_map = HashMap::<i32, f64>::new();
          
-    // should user (0..n).step_by(2) here eventually 
     for i in 0..(n_before_break + 1) {
         let p = calc_conv_prob_combinations_break(n_before_break, prob_down, i * 2);
         if i == 0 {
             my_map.insert(i, p); 
-            } else  {
+            } else {
             my_map.insert(i, p * 2.0); // Probability doubles due to symmetry
         }
     }
@@ -64,9 +62,9 @@ pub fn calc_expected_crosses_after_break(n_before_break: i32, n_after_break: i32
     println!("break map : {:?}", break_map);
     println!("cross_to_prob : {:?}", away_from_cross_to_prob);
 
-    for (k, v) in away_from_cross_to_prob.iter() {
-        expected_crosses = expected_crosses + break_map[k];
-        println!("expected_crosses : {}", expected_crosses)
+    for i in 0..n_before_break {
+        expected_crosses = expected_crosses + away_from_cross_to_prob[&i] * break_map[&i];
+        println!("expected_crosses : {} : {}", i, expected_crosses)
     }
 
     expected_crosses
@@ -85,20 +83,25 @@ pub fn calc_away_from_cross_to_prob(n_to_break: i32, prob_down: f64, n_from_brea
     my_map
 }
 
+// Something is Wrong here
 pub fn calc_after_break_exp_crosses(from_cross: i32, prob_down: f64, i: i32) ->  f64 {
-    let n_combs = math_tools::fact(i * 2) / (math_tools::fact(from_cross + i) * math_tools::fact(i));
+    let n_combs = math_tools::fact(i * 2) / (math_tools::fact(i + from_cross) * math_tools::fact(i - from_cross));
+
+    println!("i: {}, n_comb: {}", i, n_combs);
 
     let prob_up = 1.0 - prob_down;
-    let prob_of_one = prob_down.powi(from_cross + i) * prob_up.powi(i);
-    println!("n_combs : {}, prob_of_one : {}", n_combs, prob_of_one);
+    let prob_of_one = prob_down.powi(i + from_cross) * prob_up.powi(i - from_cross);
+
+    println!("i: {}, prob_of_one: {}", i, prob_of_one);
+
     n_combs as f64 * prob_of_one
 }
 
+// Something is wrong here
 pub fn calc_after_break_exp_crosses_one_point(from_cross: i32, prob_down: f64, n_full_turns_after_break: i32) -> f64 {
     let mut n_expected_crosses = 0.0;
     for i in 1..(n_full_turns_after_break - from_cross + 1) {
         n_expected_crosses = n_expected_crosses + calc_after_break_exp_crosses(from_cross, prob_down, i);
-        println!("expected crosses : {}", n_expected_crosses);
     }
     n_expected_crosses
 }
