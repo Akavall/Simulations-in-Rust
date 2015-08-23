@@ -28,9 +28,6 @@ fn main() {
     // let sim_loss_wb = simulation_combs_w_break::many_simulations_losses(5, 5, 0.5, 0.5, 1000000);
     // println!("total loss w b: {}", sim_loss_wb);
 
-    let sim_cross_wb = simulation_combs_w_break::many_simulations_crosses(2, 2, 0.5, 0.5, 1000000);
-    println!("total cross w b: {}", sim_cross_wb);
-
     println!("Testing HashMap");
     let silly = analytics_combs::make_break_map(8, 0.0);
     println!("{:?}", silly);
@@ -47,8 +44,16 @@ fn main() {
     // let temp3 = analytics_combs::calc_away_from_cross_to_prob(4, 0.5, 10);
     // println!("temp_3 : {:?}", temp3);
 
-    let temp4 = analytics_combs::calc_expected_crosses_after_break(2, 2, 0.5, 0.5);
-    println!("temp_4 : {:?}", temp4);
+    println!("Start test run");
+    let after_break = analytics_combs::calc_expected_crosses_after_break(5, 8, 0.5, 0.5);
+    let before_break = analytics_combs::calc_expected_n_crosses_combinations(0.5, 5);
+    println!("expected number of crosses: {}", before_break);
+
+    println!("analytical: {:?}", before_break + after_break);
+
+    let sim_cross_wb = simulation_combs_w_break::many_simulations_crosses(5, 8, 0.5, 0.5, 1000000);   
+    println!("simulation: {}", sim_cross_wb);
+
     
 }
 

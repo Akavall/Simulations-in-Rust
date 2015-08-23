@@ -14,7 +14,7 @@ pub fn calc_expected_n_crosses_combinations(prob_down: f64, n_turns: i32) -> f64
 pub fn make_break_map(n_before_break: i32, prob_down: f64) -> HashMap<i32, f64> {
     let mut my_map = HashMap::<i32, f64>::new();
          
-    for i in 0..(n_before_break + 1) {
+    for i in 0..(n_before_break+1) {
         let p = calc_conv_prob_combinations_break(n_before_break, prob_down, i * 2);
         if i == 0 {
             my_map.insert(i, p); 
@@ -62,15 +62,13 @@ pub fn calc_expected_crosses_after_break(n_before_break: i32, n_after_break: i32
     println!("break map : {:?}", break_map);
     println!("cross_to_prob : {:?}", away_from_cross_to_prob);
 
-    for i in 0..n_before_break {
+    for i in 0..(n_before_break + 1) {
         expected_crosses = expected_crosses + away_from_cross_to_prob[&i] * break_map[&i];
         println!("expected_crosses : {} : {}", i, expected_crosses)
     }
 
     expected_crosses
 }
-
-
 
 pub fn calc_away_from_cross_to_prob(n_to_break: i32, prob_down: f64, n_from_break_to_end: i32) -> HashMap<i32, f64> {
     // n_from_break should be equal to n_from_cross 
@@ -100,8 +98,13 @@ pub fn calc_after_break_exp_crosses(from_cross: i32, prob_down: f64, i: i32) -> 
 // Something is wrong here
 pub fn calc_after_break_exp_crosses_one_point(from_cross: i32, prob_down: f64, n_full_turns_after_break: i32) -> f64 {
     let mut n_expected_crosses = 0.0;
-    for i in 1..(n_full_turns_after_break - from_cross + 1) {
-        n_expected_crosses = n_expected_crosses + calc_after_break_exp_crosses(from_cross, prob_down, i);
+    println!("Working on from_cross: {}", from_cross);
+    for i in 0..(n_full_turns_after_break - from_cross + 1) {
+        if n_full_turns_after_break - i == 0 && from_cross == 0 { continue };
+        if from_cross == 0 {
+            n_expected_crosses = n_expected_crosses + calc_after_break_exp_crosses(from_cross, prob_down, n_full_turns_after_break - i); } else {
+            n_expected_crosses = n_expected_crosses + calc_after_break_exp_crosses(from_cross, prob_down, n_full_turns_after_break - i);
+        }
     }
     n_expected_crosses
 }
