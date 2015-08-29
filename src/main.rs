@@ -45,15 +45,17 @@ fn main() {
     // println!("temp_3 : {:?}", temp3);
 
     println!("Start test run");
-    let after_break = analytics_combs::calc_expected_crosses_after_break(5, 8, 0.5, 0.5);
-    let before_break = analytics_combs::calc_expected_n_crosses_combinations(0.5, 5);
+    let after_break = analytics_combs::calc_expected_crosses_after_break(5, 5, 1.0, 0.5);
+    let before_break = analytics_combs::calc_expected_n_crosses_combinations(1.0, 5);
     println!("expected number of crosses: {}", before_break);
 
     println!("analytical: {:?}", before_break + after_break);
 
-    let sim_cross_wb = simulation_combs_w_break::many_simulations_crosses(5, 8, 0.5, 0.5, 1000000);   
-    println!("simulation: {}", sim_cross_wb);
+    let sim_cross_wb = simulation_combs_w_break::many_simulations_crosses(5, 5, 1.0, 0.5, 100);   
+    println!("simulation: {}", sim_cross_wb); 
 
-    
+    let temp = analytics_combs::calc_expected_n_crosses_combinations(0.5, 5);
+    println!("temp: {}", temp);
+   
 }
 

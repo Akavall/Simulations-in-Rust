@@ -48,15 +48,36 @@ fn one_round_crosses(n_1: i32, n_2: i32, prob_down_1: f64, prob_down_2: f64) -> 
     let mut n_crosses = 0;
     for i in 0..(n_1 * 2) {
         let roll = rand::thread_rng().gen_range(0.0, 1.0);
-        if roll > prob_down_1 {
-            start +=1;
-        } else {
-            start -=1;
-        }
+
         if start == 0 {
-            n_crosses += 1;
+            if roll < 2.0 * (1.0 - prob_down_1) {
+                start += 1;
+                println!("Start added");
+                continue; 
+            }
+        } else {
+            if roll > prob_down_1 {
+                start +=1;
+            } else {
+                start -= 1;
+
+            // New experimental line 
+            // breaks old runs ... 0.5 / 0.5 that used to work
+
+            // if start > 0 {
+            //     start -=1;
+            //     } else {
+            //         continue;
+            // }
+
+            }
+            if start == 0 {
+                n_crosses += 1;
+            }
         }
     }
+
+    //println!("crosses before break : {}", n_crosses);
 
     for i in 0..(n_2 * 2) {
         let roll = rand::thread_rng().gen_range(0.0, 1.0);
@@ -64,11 +85,20 @@ fn one_round_crosses(n_1: i32, n_2: i32, prob_down_1: f64, prob_down_2: f64) -> 
             start +=1;
         } else {
             start -=1;
+
+            // if start > 0 {
+            //     start -=1;
+            //     } else {
+            //         continue;
+            // }
+
         }
         if start == 0 {
             n_crosses += 1;
         }
     }
+
+    //println!("crosses after break : {}", n_crosses);
     
     return n_crosses;
 }
